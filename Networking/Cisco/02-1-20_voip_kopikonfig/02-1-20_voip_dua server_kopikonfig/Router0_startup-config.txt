@@ -1,0 +1,134 @@
+!
+version 12.4
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname Router
+!
+!
+!
+!
+ip dhcp excluded-address 192.168.1.1
+!
+ip dhcp pool areaX
+ network 192.168.1.0 255.255.255.0
+ default-router 192.168.1.1
+ option 150 ip 192.168.1.1
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ ip address 192.168.1.1 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1
+ ip address 10.10.10.1 255.255.255.252
+ duplex auto
+ speed auto
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router rip
+!
+ip classless
+ip route 192.168.2.0 255.255.255.0 10.10.10.2 
+!
+ip flow-export version 9
+!
+!
+!
+!
+!
+!
+!
+!
+dial-peer voice 63 voip
+ destination-pattern 63100.
+ session target ipv4:192.168.2.1
+!
+dial-peer voice 100 voip
+ destination-pattern 200
+ session target ipv4:10.10.10.2
+!
+dial-peer voice 101 voip
+ destination-pattern 101
+ session target ipv4:192.168.2.1
+!
+telephony-service
+ max-ephones 10
+ max-dn 10
+ ip source-address 192.168.1.1 port 2000
+ auto assign 1 to 10
+!
+ephone-dn 1
+ number 100
+!
+ephone-dn 2
+ number 201
+!
+ephone-dn 3
+ number 621001
+!
+ephone-dn 4
+ number 621002
+!
+ephone 1
+ device-security-mode none
+ mac-address 00D0.D3E5.4540
+ type 7960
+ button 1:1
+!
+ephone 2
+ device-security-mode none
+ mac-address 0006.2A26.4ED6
+ type 7960
+ button 1:2
+!
+ephone 3
+ device-security-mode none
+ mac-address 0006.2A66.18A1
+ type 7960
+ button 1:3
+!
+ephone 4
+ device-security-mode none
+ mac-address 0006.2A32.9B2B
+ type 7960
+ button 1:4
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
+
